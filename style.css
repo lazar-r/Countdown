@@ -14,9 +14,9 @@ body {
 
 h1 {
   color: #fafafa;
-  font-size: clamp(23px, 5vw, 56px);
+  font-size: clamp(30px, 5vw, 56px);
   margin: 0 0 16px;
-  font-family: "Montserrat", serif;
+  font-family: "Epunda Slab", serif;
   font-weight: 600;
 }
 
