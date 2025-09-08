@@ -50,6 +50,14 @@ h1 {
   vertical-align: middle;
 }
 
+.flag-serbia {
+  margin-right: 0.5rem;
+}
+
+.flag-brasil {
+  margin-left: 0.5rem;
+}
+
 .heart {
   max-width: 7rem;
   height: auto;
