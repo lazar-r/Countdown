@@ -37,7 +37,6 @@ h1 {
 
 .num { font-size: clamp(28px, 6vw, 48px); font-weight: 700; }
 .label { opacity: .65; letter-spacing: .04em; text-transform: uppercase; font-size: 12px; }
-.note { margin-top: 16px; opacity: .7; color: #fafafa; font-size: 14px; }
 
 @media (max-width: 991px) {
   .grid {
@@ -86,3 +85,18 @@ h1 {
   background: linear-gradient(90deg, #FEDD00, #FF9900);
   transition: width 0.5s ease;
 }
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.25) 0%,
+    transparent 20%,
+    transparent 80%,
+    rgba(0, 0, 0, 0.25) 100%
+  );
+  z-index: 1;
+}
+
