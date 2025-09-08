@@ -5,11 +5,15 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Countdown to 14 November</title>
   <link rel="icon" href="favicon.png" type="image/png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
   <style>
     :root { color-scheme: light dark; }
+    .heart {
+      max-width: 7rem;   /* adjust size as needed */
+      height: auto;
+    }
     body {
       margin: 0;
       min-height: 100svh;
@@ -20,7 +24,7 @@
       color: #012169;
     }
     .wrap { text-align: center; padding: 24px; }
-    h1 { color: #fafafa; font-size: clamp(28px, 5vw, 56px); margin: 0 0 16px; font-family: "Playfair Display", serif; font-weight: 700; }
+    h1 { color: #fafafa; font-size: clamp(28px, 5vw, 56px); margin: 0 0 16px; font-family: "Montserrat", serif; font-weight: 700; }
     .grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(80px, 1fr));
@@ -42,19 +46,43 @@
     grid-template-columns: repeat(2, minmax(120px, 1fr));
   }
 }
-
-  </style>
+.flag {
+  max-width: 7rem;   /* adjust size as needed */
+  height: auto;
+  vertical-align: middle;
+}
+.top-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem; /* space between images */
+  margin-bottom: 1rem; /* space below the images */
+}
+@media screen and (max-width: 600px) {
+  .flag {
+    max-width: 5rem; /* smaller size on small screens */
+  }
+  .heart {
+    max-width: 5rem; /* smaller size on small screens */
+  }
+  
+}
+</style>
 </head>
 <body>
   <div class="wrap">
-    <h1>Countdown to 14 November</h1>
+    <div class="top-wrap">
+      <img src="assets/serbia.png" alt="Serbia flag" class="flag flag-serbia">
+      <img src="assets/heart.png" alt="Heart img" class="heart">
+      <img src="assets/brasil.png" alt="Brazil flag" class="flag flag-brasil">
+    </div>
+    <h1>Tempo até a gente se ver:</h1>
     <div class="grid" role="timer" aria-live="polite">
       <div class="cell"><div class="num" id="days">0</div><div class="label">Days</div></div>
       <div class="cell"><div class="num" id="hours">0</div><div class="label">Hours</div></div>
       <div class="cell"><div class="num" id="minutes">0</div><div class="label">Minutes</div></div>
       <div class="cell"><div class="num" id="seconds">0</div><div class="label">Seconds</div></div>
     </div>
-    <div class="note" id="note"></div>
   </div>
   <script>
     function getNextNov14(now = new Date()) {
@@ -86,9 +114,6 @@
       hoursEl.textContent = String(hours).padStart(2, "0");
       minutesEl.textContent = String(minutes).padStart(2, "0");
       secondsEl.textContent = String(seconds).padStart(2, "0");
-
-      const options = { year: 'numeric', month: 'long', day: 'numeric', timeZoneName: 'short' };
-      noteEl.textContent = "Target: " + target.toLocaleString(undefined, options);
     }
 
     // Keep ticks aligned to the wall-clock second using Date.now()
