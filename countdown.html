@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Countdown to 14 November</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root { color-scheme: light dark; }
+    body {
+      margin: 0;
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(135deg, #009739, #00c26e, #006b29);
+      color: #012169;
+    }
+    .wrap { text-align: center; padding: 24px; }
+    h1 { font-size: clamp(28px, 5vw, 56px); margin: 0 0 16px; font-family: "Playfair Display", serif; font-weight: 700; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(80px, 1fr));
+      gap: 12px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .cell {
+      background: #FEDD00;
+      border-radius: 12px;
+      box-shadow: 0 6px 24px rgba(0,0,0,.06);
+      padding: 18px 10px;
+    }
+    .num { font-size: clamp(28px, 6vw, 48px); font-weight: 700; }
+    .label { opacity: .65; letter-spacing: .04em; text-transform: uppercase; font-size: 12px; }
+    .note { margin-top: 16px; opacity: .7; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Countdown to 14 November</h1>
+    <div class="grid" role="timer" aria-live="polite">
+      <div class="cell"><div class="num" id="days">0</div><div class="label">Days</div></div>
+      <div class="cell"><div class="num" id="hours">0</div><div class="label">Hours</div></div>
+      <div class="cell"><div class="num" id="minutes">0</div><div class="label">Minutes</div></div>
+      <div class="cell"><div class="num" id="seconds">0</div><div class="label">Seconds</div></div>
+    </div>
+    <div class="note" id="note"></div>
+  </div>
+  <script>
+    function getNextNov14(now = new Date()) {
+      const year = now.getFullYear();
+      const targetThisYear = new Date(year, 10, 14, 0, 0, 0); // Month is 0-indexed: 10 = November
+      return now <= targetThisYear
+        ? targetThisYear
+        : new Date(year + 1, 10, 14, 0, 0, 0);
+    }
+
+    const $ = (id) => document.getElementById(id);
+    const daysEl = $("days"), hoursEl = $("hours"), minutesEl = $("minutes"), secondsEl = $("seconds"), noteEl = $("note");
+
+    let target = getNextNov14();
+
+    function update() {
+      const now = new Date();
+      if (now >= target) {
+        target = getNextNov14(now);
+      }
+      const diffMs = target - now;
+      const totalSeconds = Math.max(0, Math.floor(diffMs / 1000));
+      const days = Math.floor(totalSeconds / (3600 * 24));
+      const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      daysEl.textContent = String(days);
+      hoursEl.textContent = String(hours).padStart(2, "0");
+      minutesEl.textContent = String(minutes).padStart(2, "0");
+      secondsEl.textContent = String(seconds).padStart(2, "0");
+
+      const options = { year: 'numeric', month: 'long', day: 'numeric', timeZoneName: 'short' };
+      noteEl.textContent = "Target: " + target.toLocaleString(undefined, options);
+    }
+
+    // Keep ticks aligned to the wall-clock second using Date.now()
+    let timeoutId;
+    function scheduleNextTick() {
+      clearTimeout(timeoutId);
+      const now = Date.now();
+      const delay = 1000 - (now % 1000);
+      timeoutId = setTimeout(() => {
+        update();
+        scheduleNextTick();
+      }, delay);
+    }
+
+    update();
+    scheduleNextTick();
+  </script>
+</body>
+</html>
