@@ -58,17 +58,10 @@ function update() {
   updateProgress();
 }
 
-// Keep ticks aligned to wall clock seconds
-let timeoutId;
-function scheduleNextTick() {
-  clearTimeout(timeoutId);
-  const now = Date.now();
-  const delay = 1000 - (now % 1000);
-  timeoutId = setTimeout(() => {
-    update();
-    scheduleNextTick();
-  }, delay);
+// ⏱ precise ticking, no drift
+function startTicker() {
+  update(); // run immediately
+  setInterval(update, 1000); // tick every second
 }
 
-update();
-scheduleNextTick();
+startTicker();
