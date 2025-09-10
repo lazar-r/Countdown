@@ -61,6 +61,8 @@ h1 {
 .heart {
   max-width: 7rem;
   height: auto;
+  animation: pulse 1.1s infinite;
+  transform-origin: center;
 }
 
 .circles-wrap {
@@ -108,10 +110,23 @@ h1 {
   );
   z-index: 1;
 }
+
 .photo {
   width: 7rem;
   height: auto;
   border-radius: 50%;
   object-fit: cover;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2); /* increase size at peak */
+  }
+  100% {
+    transform: scale(1);
+  }
 }
