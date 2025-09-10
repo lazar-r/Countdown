@@ -1,19 +1,11 @@
-function getNextNov14(now = new Date()) {
+function getNextLocalNov14(now = new Date()) {
   const year = now.getFullYear();
-  const targetThisYear = new Date(Date.UTC(year, 10, 14, 0, 0, 0)); // Nov 14 00:00 UTC
+  // Target: Nov 14, 00:00 in the USER'S local time zone
+  const targetThisYear = new Date(year, 10, 14, 0, 0, 0); // month=10 → November
+
   return now <= targetThisYear
     ? targetThisYear
-    : new Date(Date.UTC(year + 1, 10, 14, 0, 0, 0));
-}
-
-function getCountdownStart(now) {
-  const start = new Date(now);
-  start.setUTCHours(19, 0, 0, 0); // 21:00 CET = 19:00 UTC
-  if (now < start) {
-    // if before 21:00 CET today → use yesterday 21:00 CET
-    start.setUTCDate(start.getUTCDate() - 1);
-  }
-  return start;
+    : new Date(year + 1, 10, 14, 0, 0, 0);
 }
 
 const $ = (id) => document.getElementById(id);
@@ -23,9 +15,10 @@ const daysEl = $("days"),
       secondsEl = $("seconds"),
       progressEl = $("progress-bar");
 
-let now = new Date();
-let target = getNextNov14(now);
-let countdownStart = getCountdownStart(now);
+let target = getNextLocalNov14();
+
+// Progress starts 8th September, 00:00 local time
+const countdownStart = new Date(target.getFullYear(), 8, 8, 0, 0, 0);
 
 function updateProgress() {
   const now = new Date();
@@ -38,8 +31,7 @@ function updateProgress() {
 function update() {
   const now = new Date();
   if (now >= target) {
-    target = getNextNov14(now);
-    countdownStart = getCountdownStart(now);
+    target = getNextLocalNov14(now);
   }
 
   const diffMs = target - now;
@@ -58,7 +50,7 @@ function update() {
   updateProgress();
 }
 
-// ⏱ precise ticking, no drift
+// ⏱ precise ticking
 function startTicker() {
   update(); // run immediately
   setInterval(update, 1000); // tick every second
